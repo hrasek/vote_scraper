@@ -67,7 +67,7 @@ try:
     odkaz = sys.argv[1]
     name = sys.argv[2]
 except IndexError:
-    sys.exit('Zadali jste nesprávné vstupní argumenty.\nPro správnou funkčnost programu zadejte argumenty v nejdříve odkaz,\nze kterého chcete scrapovat, a následně soubor, do kterého chcete ukládat. ')
+    sys.exit('Zadali jste nesprávné vstupní argumenty.\nPro správnou funkčnost programu zadejte argumenty nejdříve odkaz,\nze kterého chcete scrapovat, a následně soubor, do kterého chcete ukládat. ')
 #odkaz = 'https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7103'
 #name = 'vysledky_prostejov.csv'
 
