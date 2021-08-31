@@ -5,4 +5,5 @@ Tento projekt se zabývá scrapováním výsledků Poslanecké sněmovny Parlame
 
 # Spuštění projektu
 Pro spuštění projektu budete potřebovat několik knihoven. Jejich seznam naleznete v přeloženém souboru requirements.txt
-Pokud máte nainstalovaný manažer stačí zadat do konzole následující příkaz:
+Pokud máte nainstalovaný manažer stačí zadat do konzole následující příkaz:pip install -r requirements.txt
+
