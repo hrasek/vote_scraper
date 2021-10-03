@@ -7,9 +7,10 @@ from bs4 import BeautifulSoup as BS
 import csv
 
 
-# Program scrapuje výsledky voleb do Poslanecké sněmovny Parlamentu České republiky z roku 2017.\ Vyscrapuje vždy výsledky z jednoho územního celku a vrací tabulku z výsledky v jednotlivých obcích.
+# Program scrapuje výsledky voleb do Poslanecké sněmovny Parlamentu České republiky z roku 2017.
+# Vyscrapuje vždy výsledky z jednoho územního celku a vrací tabulku z výsledky v jednotlivých obcích.
 
-def tabulka_uzemni_celek(odkaz): # Funkce bere jako vstup odkaz na stránku s územním celkem a jako výstup dává tabulku s jednotlivými obcemi v tomto územním celku.
+def tabulka_uzemni_celek(odkaz):  # Funkce bere jako vstup odkaz na stránku s územním celkem a jako výstup dává tabulku s jednotlivými obcemi v tomto územním celku.
     tabulky = pd.read_html(odkaz, encoding='utf-8')
     radky = []
     for tabulka in tabulky:
@@ -26,14 +27,14 @@ def stahni_odkazy(odkaz): # Funkce bere jako vstup odkaz na stránku s územním
     for acka in a:
         links.append('https://volby.cz/pls/ps2017nss/' + acka.get('href')) # Dává odkazu odpovídající podobu. Následuje filtrování nepotřebných odkazů.
     links = links[5:-2]
-    if len(links) % 2 == 1: # tzv. varianta Brno. Pro okres Brno-město má stránka trochu jinou strukturu, než pro ostatní okresy.
+    if len(links) % 2 == 1:  # tzv. varianta Brno. Pro okres Brno-město má stránka trochu jinou strukturu, než pro ostatní okresy.
         links = links[::3]
     else:
         links = links[::2]
     return links
 
 
-def tabulka_obce(link): # Funkce bere jako vstup odkaz na stránku s výsledky v dané obci a vrací tabulky s výsledky v nich.
+def tabulka_obce(link):  # Funkce bere jako vstup odkaz na stránku s výsledky v dané obci a vrací tabulky s výsledky v nich.
     tabulky = pd.read_html(link, encoding='utf-8')
     info = tabulky[0].values.tolist()
     info = [info[0][3], info[0][4], info[0][7]]
@@ -47,7 +48,7 @@ def tabulka_obce(link): # Funkce bere jako vstup odkaz na stránku s výsledky v
     return info, vysledky, strany
 
 
-def zapis_do_slovniku(slovnik, strany, vysledky, poradi_obce): # Funkce bere jako vstup slovnik, do kterého mají být zapsaný výsledky voleb, dále seznam stran a jejich výsledky a nakonec pořadí obce v daném seznamu obcí. Jako výstup dává slovník se zahrnutými výsledky.
+def zapis_do_slovniku(slovnik, strany, vysledky, poradi_obce):  # Funkce bere jako vstup slovnik, do kterého mají být zapsaný výsledky voleb, dále seznam stran a jejich výsledky a nakonec pořadí obce v daném seznamu obcí. Jako výstup dává slovník se zahrnutými výsledky.
     for index, strana in enumerate(strany):
         pocet_hlasu = int(re.sub('\xa0', '', str(vysledky[index])))
         if strana in slovnik.keys():
@@ -61,7 +62,7 @@ def zapis_do_slovniku(slovnik, strany, vysledky, poradi_obce): # Funkce bere jak
     return slovnik
 
 
-def write_to_file(name, radky, nadpis): # Funkce bere jako vstup název souboru, do kterého má zapsat, poté data a také jejich nadpis. To jsou zapsány do souboru s odpovídajícím názvem.
+def write_to_file(name, radky, nadpis):  # Funkce bere jako vstup název souboru, do kterého má zapsat, poté data a také jejich nadpis. To jsou zapsány do souboru s odpovídajícím názvem.
     with open(name, 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(nadpis)
@@ -70,7 +71,7 @@ def write_to_file(name, radky, nadpis): # Funkce bere jako vstup název souboru,
 try:
     odkaz = sys.argv[1]
     name = sys.argv[2]
-except IndexError: # Vypořádání se se špatným voláním programu.
+except IndexError:  # Vypořádání se se špatným voláním programu.
     sys.exit('Zadali jste nesprávné vstupní argumenty.\nPro správnou funkčnost programu zadejte argumenty nejdříve odkaz,\nze kterého chcete scrapovat, a následně soubor, do kterého chcete ukládat. ')
 
 nadpis = ['code', 'location', 'registred', 'envelopes', 'valid']
