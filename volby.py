@@ -67,29 +67,33 @@ def write_to_file(name, radky, nadpis):  # Funkce bere jako vstup název souboru
         writer = csv.writer(f)
         writer.writerow(nadpis)
         writer.writerows(radky)
+def main():
+    try:
+        odkaz = sys.argv[1]
+        name = sys.argv[2]
+    except IndexError:  # Vypořádání se se špatným voláním programu.
+        sys.exit('Zadali jste nesprávné vstupní argumenty.\nPro správnou funkčnost programu zadejte argumenty nejdříve odkaz,\nze kterého chcete scrapovat, a následně soubor, do kterého chcete ukládat. ')
 
-try:
-    odkaz = sys.argv[1]
-    name = sys.argv[2]
-except IndexError:  # Vypořádání se se špatným voláním programu.
-    sys.exit('Zadali jste nesprávné vstupní argumenty.\nPro správnou funkčnost programu zadejte argumenty nejdříve odkaz,\nze kterého chcete scrapovat, a následně soubor, do kterého chcete ukládat. ')
+    nadpis = ['code', 'location', 'registred', 'envelopes', 'valid']
+    print('Stahuji data z vybraného URL: {}'.format(odkaz))
+    info_obce = tabulka_uzemni_celek(odkaz)
 
-nadpis = ['code', 'location', 'registred', 'envelopes', 'valid']
-print('Stahuji data z vybraného URL: {}'.format(odkaz))
-info_obce = tabulka_uzemni_celek(odkaz)
+    links = stahni_odkazy(odkaz)
+    strany_slovnik = dict()
+    radky = []
 
-links = stahni_odkazy(odkaz)
-strany_slovnik = dict()
-radky = []
+    for index, link in enumerate(links):
+        info, vysledky, strany_list = tabulka_obce(link)
 
-for index, link in enumerate(links):
-    info, vysledky, strany_list = tabulka_obce(link)
+        strany_slovnik = zapis_do_slovniku(strany_slovnik, strany_list, vysledky, index + 1)
+        hlasy = [item[index] for item in list(strany_slovnik.values())]
+        radky.append(info_obce[index][0:-1] + info + hlasy)
 
-    strany_slovnik = zapis_do_slovniku(strany_slovnik, strany_list, vysledky, index + 1)
-    hlasy = [item[index] for item in list(strany_slovnik.values())]
-    radky.append(info_obce[index][0:-1] + info + hlasy)
+    nadpis.extend(list(strany_slovnik.keys()))
+    print('Ukládám do souboru: {}'.format(name))
+    write_to_file(name, radky, nadpis)
+    print('Ukončuji volby.py')
 
-nadpis.extend(list(strany_slovnik.keys()))
-print('Ukládám do souboru: {}'.format(name))
-write_to_file(name, radky, nadpis)
-print('Ukončuji volby.py')
+if __name__ == "__main__":
+   main()
+    
