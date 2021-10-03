@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup as BS
 import csv
 
 
-## Program scrapuje výsledky voleb do Poslanecké sněmovny Parlamentu České republiky z roku 2017. Vyscrapuje vždy výsledky z jednoho územního celku a vrací tabulku z výsledky v jednotlivých obcích.
+# Program scrapuje výsledky voleb do Poslanecké sněmovny Parlamentu České republiky z roku 2017.\ Vyscrapuje vždy výsledky z jednoho územního celku a vrací tabulku z výsledky v jednotlivých obcích.
 
 def tabulka_uzemni_celek(odkaz): # Funkce bere jako vstup odkaz na stránku s územním celkem a jako výstup dává tabulku s jednotlivými obcemi v tomto územním celku.
     tabulky = pd.read_html(odkaz, encoding='utf-8')
